@@ -1,0 +1,10 @@
+.app {
+  display: flex;
+}
+.restaurants {
+  flex-basis: 60%;
+}
+.map {
+  flex-grow: 1;
+}
+
