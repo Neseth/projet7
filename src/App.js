@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { map } from 'lodash';
 import Map from './map';
 import Restaurant from './restaurant';
+import Marker from './marker';
 import './App.css';
 
 class App extends Component {
@@ -93,31 +93,17 @@ class App extends Component {
       console.log(restaurant)
       return restaurant
     })
-
 */
-
   render() {
-    
-    
-
     return (
       <div className="app">
         <div className="restaurants">
-
-
-{this.state.restaurants.map((restaurant, key) => {
-      const ratings = map(restaurant.ratings, (rating, key) => {
-        console.log(rating)
-        return <div>{rating.stars}{rating.comment}</div>
-      });
-      console.log(restaurant)
-      return <Restaurant restaurant={restaurant}/>
-    })}
-       
-      
+          {this.state.restaurants.map((restaurant, index) => {
+            return <Restaurant restaurant={restaurant} key={index} />
+          })}
         </div>
         <div className="map">
-          <Map />
+          <Map restaurant={this.state.restaurants} />
         </div>
       </div>
     );
