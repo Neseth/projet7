@@ -11,14 +11,17 @@ class Restaurant extends Component {
       // const rating = this.props.restaurant.ratings.map((rating => {
       //     return rating
      //  }))
-    
-
-        const restau = `${this.props.restaurant.restaurantName} ${this.props.restaurant.address} 
-        ${this.props.rating.stars} ${this.props.rating.comment}`
+    console.log(this.props.restaurant)
+    const ratings = this.props.restaurant.ratings.map((rating, key) => {
+        console.log(rating)
+        return <div>{rating.stars}{rating.comment}</div>
+    })
+        const restau = `${this.props.restaurant.restaurantName}${this.props.restaurant.rating} `
         return (
             <div className="restaurant">
-                {restau}    
-                 {this.props.rating.stars}
+                {restau}   
+                {ratings}
+                {this.props.restaurant.ratings.stars}
             </div>
         );
     }

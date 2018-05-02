@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { map } from 'lodash';
 import Map from './map';
 import Restaurant from './restaurant';
 import './App.css';
@@ -54,29 +55,78 @@ class App extends Component {
   //  this.state.restaurants.ratings.map((ratings, subindex) => 
   //   <p key={subindex}>{ratings.stars}{ratings.comment}</p>)
   //  })
+  /*
+  const restaurants = this.state.restaurants.map((restaurant, key) => {
+      const ratings = map(restaurant.ratings, (rating, key) => {
+        console.log(rating)
+        return rating
+      });
+      console.log(restaurant)
+      return restaurant
+    })
+    console.log(restaurants)
+
+    <Restaurant restaurant={this.state.restaurants.map((restaurant, key) => {
+            const ratings = map(restaurant.ratings, (rating, key) => {
+              console.log(rating)
+              return <div>{rating}</div>
+            });
+            console.log(ratings)
+            return <div>{ratings}</div>
+            
+          })}
+    />
+
+    const restaurants = this.state.restaurants.map((restaurant, key) => {
+      const ratings = map(restaurant.ratings, (rating, key) => {
+        const stars = map(rating.stars, (star, key) => {
+          console.log(stars)
+          return star
+        })
+        const comments = (rating.comment, (comment, key) => {
+          console.log(comments)
+          return comment
+        })
+        console.log(ratings)
+        return rating
+      });
+      console.log(restaurant)
+      return restaurant
+    })
+
+*/
 
   render() {
-    const test = this.state.restaurants.map((restaurant) => {
-      return test
-    })
+    
+    
 
     return (
       <div className="app">
         <div className="restaurants">
-          {this.state.restaurants.map((restaurant, index) => { 
-              return <Restaurant restaurant={restaurant} rating={key => this.state.restaurants[key].ratings.map((rating) => rating)}  />
-          })}     
+
+
+{this.state.restaurants.map((restaurant, key) => {
+      const ratings = map(restaurant.ratings, (rating, key) => {
+        console.log(rating)
+        return <div>{rating.stars}{rating.comment}</div>
+      });
+      console.log(restaurant)
+      return <Restaurant restaurant={restaurant}/>
+    })}
+       
+      
         </div>
         <div className="map">
-          <Map test={test} />
+          <Map />
         </div>
-
       </div>
     );
   }
 }
 
 export default App;
+
+//rating={key => this.state.restaurants[key].ratings.map((rating) => rating)}
 
 //{this.state.restaurants.map((restaurant, index) => {
 // return <Restaurant restaurant={restaurant} key={index} />
