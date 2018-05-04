@@ -3,6 +3,7 @@
 }
 .restaurants {
   flex-basis: 60%;
+  cursor: pointer;
 }
 .map {
   flex-grow: 1;
