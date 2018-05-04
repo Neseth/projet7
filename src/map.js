@@ -4,7 +4,25 @@ import Marker from './marker';
 import './map.css';
 
 class Map extends Component {
+  state = {
+    latitude: null,
+    longitude: null,
+    error: null,
+  };
 
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+  }
 
   render() {
     let center = {
@@ -20,7 +38,6 @@ class Map extends Component {
     }
 
     return (
-
       <div className="map">
         <GoogleMapReact
           center={center}
@@ -34,6 +51,8 @@ class Map extends Component {
           {this.props.restaurant.map((restaurant, index) => {
             return <Marker lat={restaurant.lat} lng={restaurant.long} text={restaurant.restaurantName} selected={restaurant === this.props.selected} key={index} />
           })}
+
+          <Marker lat={this.state.latitude} lng={this.state.longitude} text={"Vous êtes ici !"} located={this.state.error === null ? true : false} />
         </GoogleMapReact>
 
 

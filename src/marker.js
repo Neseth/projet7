@@ -6,6 +6,8 @@ class Marker extends Component {
         let classes = "marker";
         if (this.props.selected) {
             classes += " selected";
+        } if (this.props.located === true) {
+            classes += " located";
         }
         return (
             <div className={classes}>
