@@ -11,7 +11,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch("https://raw.githubusercontent.com/Neseth/projet7/master/src/restaurants.json")
+    fetch("https://raw.githubusercontent.com/Neseth/projet7/master/src/restaurant.json")
       .then(response => response.json())
       .then((data) => {
         this.setState({
