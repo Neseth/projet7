@@ -1,8 +1,8 @@
 .restaurant {
     width: 100%;
-    height: 200px;
+    min-height: 200px;
 }
 .restaurant:hover {
     opacity: 1;
-    background-color: blue;
+    background-color: rgb(96, 96, 211);
 }

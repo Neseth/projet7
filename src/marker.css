@@ -11,7 +11,7 @@
     left: -K_WIDTH / 2;
     top: -K_HEIGHT / 2;
 
-    border: 5px solid #f44336;
+    border: 5px solid #9fd461;
     border-radius: K_HEIGHT;
     background-color: white;
     text-align: center;
@@ -20,8 +20,8 @@
     font-weight: bold;
     padding: 3px;
 }
-.marker.selected {
-    background-color: red;
+.marker.selected { 
+    background-color: #d7da50;
 }
 .marker.located {
     background-color: yellow;

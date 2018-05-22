@@ -8,6 +8,11 @@ class Map extends Component {
     latitude: null,
     longitude: null,
     error: null,
+    bounds: null,
+    neLat: null,
+    swLat: null,
+    neLng: null,
+    swLng: null,
   };
 
   componentDidMount() {
@@ -24,42 +29,116 @@ class Map extends Component {
     );
   }
 
+  handleChangeMap = ({ bounds }) => {
+    let ne = bounds.ne
+    let sw = bounds.sw
+    let neLat = bounds.ne.lat
+    let swLat = bounds.sw.lat
+    let neLng = bounds.ne.lng
+    let swLng = bounds.sw.lng
+
+    this.setState({
+      bounds: { ne, sw },
+      neLat: neLat,
+      swLat: swLat,
+      neLng: neLng,
+      swLng: swLng
+    })
+    console.log(bounds)
+    console.log(neLat)
+    console.log(swLat)
+    console.log(this.state.bounds)
+  }
+
+  apiIsLoaded = (map, maps) => {
+    if (map) {
+      const bounds = map.getBounds();
+      // let ne = bounds.getNorthEast().lng();
+      console.log(bounds)
+    } 
+    let marker = new maps.Marker({
+      position: {lat: this.props.restaurant.lat, lng: this.props.restaurant.long},
+      map,
+      title: 'Hello World!'
+    });
+
+  };
+  
+
   render() {
-    let center = {
-      lat: 48.8566,
-      lng: 2.3522
+    
+    const test2 = this.state.bounds
+    console.log(test2)
+
+    let test = {
+      lat: this.state.latitude,
+      lng: this.state.longitude
     }
 
     if (this.props.selected) {
-      center = {
+      test = {
         lat: this.props.selected.lat,
         lng: this.props.selected.long
       }
     }
 
+    
     return (
       <div className="map">
         <GoogleMapReact
-          center={center}
+          bootstrapURLKeys={{ key: "AIzaSyCaA0-daqyri5e5XJr97l5CB1mbw1X8-xE" }}
+          center={test}
           zoom={11}
-          /*
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places"
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}*/ >
+          onChange={this.handleChangeMap}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps)}
+        >
 
           {this.props.restaurant.map((restaurant, index) => {
-            return <Marker lat={restaurant.lat} lng={restaurant.long} text={restaurant.restaurantName} selected={restaurant === this.props.selected} key={index} />
+            console.log(this.state.neLat)
+            console.log(restaurant.lat)
+            console.log(this.state.swLat)
+            console.log(this.state.neLng)
+            console.log(restaurant.long)
+            console.log(this.state.swLng)
+
+            if ((this.state.neLat > restaurant.lat) && (restaurant.lat > this.state.swLat) && (this.state.neLng > restaurant.long) && (restaurant.long > this.state.swLng)) {
+              return <Marker lat={restaurant.lat} lng={restaurant.long} text={restaurant.restaurantName} selected={restaurant === this.props.selected} key={index} />
+            } else {
+              return null
+            }
           })}
 
           <Marker lat={this.state.latitude} lng={this.state.longitude} text={"Vous êtes ici !"} located={this.state.error === null ? true : false} />
+
         </GoogleMapReact>
-
-
       </div>
     );
   }
 }
 
-
 export default Map;
+
+// map api key : AIzaSyCaA0-daqyri5e5XJr97l5CB1mbw1X8-xE
+/*
+if center.fitbounds() ? this props return marker
+*/
+/*
+const apiIsLoaded = (map, maps) => {
+      if (map) {
+        const bounds = map.getBounds();
+       // let ne = bounds.getNorthEast().lng();
+        console.log(bounds)
+      }
+    };
+
+<GoogleMapReact
+          center={center}
+          zoom={11}
+          ref={(ref) => { this.map = ref; }}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
+        >
+const {center, zoom} = fitBounds(bounds, size);
+let ne = bounds.getNorthEast().lng();
+*/
