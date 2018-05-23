@@ -4,7 +4,7 @@ import './marker.css';
 class Marker extends Component {
     render() {
         let classes = "marker";
-        if (this.props.selected) {
+        if (this.props.mouseEnter === true) {
             classes += " selected";
         } if (this.props.located === true) {
             classes += " located";

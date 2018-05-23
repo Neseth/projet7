@@ -2,7 +2,7 @@
   display: flex;
 }
 .restaurants {
-  flex-basis: 60%;
+  flex-basis: 40%;
   cursor: pointer;
 }
 .map {

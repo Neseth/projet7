@@ -3,11 +3,17 @@ import './restaurant.css';
 
 class Restaurant extends Component {
     state = {
-        coms: false,
+        coms: false
     }
 
     handleClick = () => {
-        this.props.handleClick(this.props.restaurant);
+        this.props.handleClick(this.props.restaurant)
+    }
+    handleOnMouseEnter = () => {
+        this.props.handleOnMouseEnter(this.props.restaurant)
+    }
+    handleOnMouseLeave = () => {
+        this.props.handleOnMouseLeave()
     }
 
     render() {
@@ -26,7 +32,7 @@ class Restaurant extends Component {
         const average = starValue / star.length;
 
         return (
-            <div className="restaurant" onClick={this.handleClick}>
+            <div className="restaurant" onClick={this.handleClick} onMouseEnter={this.handleOnMouseEnter} onMouseLeave={this.handleOnMouseLeave}>
                 {this.props.restaurant.restaurantName}
                 <div>{"Note moyenne : " + average}</div>
                 <button onClick={() => this.setState({ coms: !coms })}>Commentaires</button>
