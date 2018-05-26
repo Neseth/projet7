@@ -26,6 +26,22 @@ class Map extends Component {
     },
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.center !== nextState.center) {
+      return true;
+    }
+    if (this.props.selected !== nextProps.selected) {
+      return true;
+    }
+    if (this.props.mouseEnter !== nextProps.mouseEnter) {
+      return true;
+    }
+    if (this.props.value !== nextProps.value) {
+      return true;
+    }
+    return false;
+  }
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -82,20 +98,23 @@ class Map extends Component {
       center = {
         lat: this.props.selected.lat,
         lng: this.props.selected.long
-      }  
-      setTimeout(function () {
-        this.setState({ center: null });
-      }.bind(this), 1000);     
+      }
     }
 
     const marker = this.props.restaurant.map((restaurant, index) => {
+      const star = restaurant.ratings.map((rating, index) => {
+        return rating.stars
+      })
+      const starValue = star.reduce((previous, current) => current + previous);
+      const average = starValue / star.length;
+      
       if ((this.state.bounds.ne.lat > restaurant.lat) && (restaurant.lat > this.state.bounds.sw.lat)
-        && (this.state.bounds.ne.lng > restaurant.long) && (restaurant.long > this.state.bounds.sw.lng)) {
-        return <Marker lat={restaurant.lat} lng={restaurant.long} text={restaurant.restaurantName} selected={restaurant === this.props.selected} 
-               mouseEnter={restaurant === this.props.mouseEnter} key={index} />
+        && (this.state.bounds.ne.lng > restaurant.long) && (restaurant.long > this.state.bounds.sw.lng) && (average > this.props.value)) {
+        return <Marker lat={restaurant.lat} lng={restaurant.long} text={restaurant.restaurantName} selected={restaurant === this.props.selected}
+          mouseEnter={restaurant === this.props.mouseEnter} key={index} />
       } else { return null }
-    });
-
+    }) 
+  
     const myPos = <Marker lat={this.state.myPos.lat} lng={this.state.myPos.lng} text={"Vous êtes ici !"} located={this.state.error === null ? true : false} />;
 
     return (

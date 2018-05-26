@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Map from './map';
 import Restaurant from './restaurant';
+import SliderNote from './slider';
 
 import './App.css';
 
@@ -18,7 +19,8 @@ class App extends Component {
         lat: null,
         lng: null
       }
-    }
+    }, 
+    value: 0
   };
 
   componentDidMount() {
@@ -29,6 +31,22 @@ class App extends Component {
           restaurants: data
         });
       })
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.bounds !== nextState.bounds) {
+      return true;
+    }
+    if (this.state.selected !== nextState.selected) {
+      return true;
+    }
+    if (this.state.mouseEnter !== nextState.mouseEnter) {
+      return true;
+    }
+    if (this.state.value !== nextState.value) {
+      return true;
+    }
+    return false;
   }
 
   selectedRestaurant = (restaurant) => {
@@ -45,6 +63,7 @@ class App extends Component {
       mouseEnter: restaurant
     })
   }
+  
   handleOnMouseLeave = () => {
     this.setState({
       mouseEnter: false
@@ -66,20 +85,27 @@ class App extends Component {
     })
   }
 
+  handleValue = (value) => {
+    this.setState({
+      value: value
+    })
+  }
+
   render() {
     return (
       <div className="app">
         <div className="restaurants">
+          <SliderNote handleValue={this.handleValue} />
           {this.state.restaurants.map((restaurant, index) => {
             if ((this.state.bounds.ne.lat > restaurant.lat) && (restaurant.lat > this.state.bounds.sw.lat)
-              && (this.state.bounds.ne.lng > restaurant.long) && (restaurant.long > this.state.bounds.sw.lng)) {
-              return <Restaurant restaurant={restaurant} handleClick={this.selectedRestaurant} handleOnMouseEnter={this.handleOnMouseEnter} 
-                     handleOnMouseLeave={this.handleOnMouseLeave} key={index} />
+              && (this.state.bounds.ne.lng > restaurant.long) && (restaurant.long > this.state.bounds.sw.lng))  {
+              return <Restaurant restaurant={restaurant} handleClick={this.selectedRestaurant} handleOnMouseEnter={this.handleOnMouseEnter}
+                handleOnMouseLeave={this.handleOnMouseLeave} value={this.state.value} rating={restaurant.ratings} key={index}  />
             } else { return null }
           })}
         </div>
         <div className="map">
-          <Map restaurant={this.state.restaurants} selected={this.state.selected} mouseEnter={this.state.mouseEnter} handleShown={this.handleShown} />
+          <Map restaurant={this.state.restaurants} selected={this.state.selected} mouseEnter={this.state.mouseEnter} handleShown={this.handleShown} value={this.state.value} />
         </div>
       </div>
     );

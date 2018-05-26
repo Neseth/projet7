@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import './marker.css';
 
 class Marker extends Component {
+    
+    shouldComponentUpdate(nextProps, nextState) {    
+        if (this.props.mouseEnter !== nextProps.MouseEnter) {
+          return true;
+        }
+        return false;
+      }
+    
     render() {
         let classes = "marker";
         if (this.props.mouseEnter === true) {

@@ -3,17 +3,27 @@ import './restaurant.css';
 
 class Restaurant extends Component {
     state = {
-        coms: false
+        coms: false,
     }
 
-    handleClick = () => {
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.coms !== nextState.coms) {
+            return true;
+        }
+        if (this.props.value !== nextProps.value) {
+            return true;
+        }
+        return false;
+    }
+
+    handleClick = (event) => {
         this.props.handleClick(this.props.restaurant)
     }
-    handleOnMouseEnter = () => {
+    handleOnMouseEnter = (event) => {
         this.props.handleOnMouseEnter(this.props.restaurant)
     }
-    handleOnMouseLeave = () => {
-        this.props.handleOnMouseLeave()
+    handleOnMouseLeave = (event) => {
+        this.props.handleOnMouseLeave(this.props.restaurant)
     }
 
     render() {
@@ -25,21 +35,25 @@ class Restaurant extends Component {
         const star = this.props.restaurant.ratings.map((rating, index) => {
             return rating.stars
         })
-        
+
         const streetView = "https://maps.googleapis.com/maps/api/streetview?size=400x400&fov=90&heading=235&pitch=10"
         const key = "AIzaSyBdScQJYPezngPd3NYEZk3Kb_OGHKlVcnw"
         const starValue = star.reduce((previous, current) => current + previous);
         const average = starValue / star.length;
-
+        
         return (
-            <div className="restaurant" onClick={this.handleClick} onMouseEnter={this.handleOnMouseEnter} onMouseLeave={this.handleOnMouseLeave}>
-                {this.props.restaurant.restaurantName}
-                <div>{"Note moyenne : " + average}</div>
-                <button onClick={() => this.setState({ coms: !coms })}>Commentaires</button>
-                {coms ?
-                    <div>
-                        {ratings}
-                        <img src={streetView + "&key=" + key + "&location=" + this.props.restaurant.lat + "," + this.props.restaurant.long} alt="lol" />
+            <div>
+                {average > this.props.value ?
+                    <div className="restaurant" onClick={this.handleClick} onMouseEnter={this.handleOnMouseEnter} onMouseLeave={this.handleOnMouseLeave} >
+                        {this.props.restaurant.restaurantName}
+                        <div>{"Note moyenne : " + average}</div>
+                        <button onClick={() => this.setState({ coms: !coms })}>Commentaires</button>
+                        {coms ?
+                            <div>
+                                {ratings}
+                                <img src={streetView + "&key=" + key + "&location=" + this.props.restaurant.lat + "," + this.props.restaurant.long} alt="lol" />
+                            </div>
+                            : null}
                     </div>
                     : null}
             </div>
