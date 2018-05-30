@@ -24,6 +24,7 @@ class Map extends Component {
         lng: null
       }
     },
+    clicked: null,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -38,6 +39,9 @@ class Map extends Component {
     }
     if (this.props.value !== nextProps.value) {
       return true;
+    }
+    if (this.state.clicked !== nextState.clicked) {
+      return true
     }
     return false;
   }
@@ -64,6 +68,7 @@ class Map extends Component {
 
   handleMapChange = ({ bounds }) => {
     this.props.handleShown(bounds)
+
     this.setState({
       bounds: {
         sw: {
@@ -88,9 +93,20 @@ class Map extends Component {
     })
   }
 
+  handleClick = ({ lat, lng }) => {
+    this.props.newMarkeur(lat, lng)
+    this.setState({
+      clicked: {
+        lat: lat,
+        lng: lng
+      }
+    })
+  }
+
   render() {
     const height = document.documentElement.clientHeight
     const width = document.documentElement.clientWidth * 40 / 100;
+    const clicked = this.state.clicked
 
     let center = this.state.center
 
@@ -102,19 +118,19 @@ class Map extends Component {
     }
 
     const marker = this.props.restaurant.map((restaurant, index) => {
-      const star = restaurant.ratings.map((rating, index) => {
+      const star = restaurant.ratings ? restaurant.ratings.map((rating, index) => {
         return rating.stars
-      })
-      const starValue = star.reduce((previous, current) => current + previous);
-      const average = starValue / star.length;
-      
+      }) : null
+      const starValue = star ? star.reduce((previous, current) => current + previous) : null
+      const average = starValue ? starValue / star.length : null
+
       if ((this.state.bounds.ne.lat > restaurant.lat) && (restaurant.lat > this.state.bounds.sw.lat)
         && (this.state.bounds.ne.lng > restaurant.long) && (restaurant.long > this.state.bounds.sw.lng) && (average > this.props.value)) {
         return <Marker lat={restaurant.lat} lng={restaurant.long} text={restaurant.restaurantName} selected={restaurant === this.props.selected}
           mouseEnter={restaurant === this.props.mouseEnter} key={index} />
       } else { return null }
-    }) 
-  
+    })
+
     const myPos = <Marker lat={this.state.myPos.lat} lng={this.state.myPos.lng} text={"Vous êtes ici !"} located={this.state.error === null ? true : false} />;
 
     return (
@@ -125,7 +141,9 @@ class Map extends Component {
           zoom={11}
           style={{ height: height, width: width }}
           onChange={this.handleMapChange}
+          onClick={this.handleClick}
         >
+          {clicked && <Marker lat={this.state.clicked.lat} lng={this.state.clicked.lng} />}
           {marker}
           {myPos}
         </GoogleMapReact>}

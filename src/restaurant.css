@@ -6,3 +6,25 @@
     opacity: 1;
     background-color: rgb(96, 96, 211);
 }
+img {
+    width: 200px;
+    height: 200px;
+}
+textarea {
+    width: 400px;
+    height: 50px;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.backStyle {
+    background-color: rgba(0,0,0,0.3);
+    padding: 20px;
+}
+.modalStyle {
+    background-color: #fff;
+    border-radius: 5px;
+    max-width: 500px;
+    min-height: 200px;
+    margin: 0 auto;
+    padding: 30px;
+}
