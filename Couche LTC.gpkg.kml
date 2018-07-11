@@ -11,7 +11,7 @@
 </Schema>
 <Folder><name>Territoire_LTC</name>
   <Placemark>
-	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><color>7f0000ff</color><fill>1</fill></PolyStyle></Style>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><color>7f0000ff</color><colorMode>normal</colorMode><fill>1</fill></PolyStyle></Style>
 	<ExtendedData><SchemaData schemaUrl="#Territoire_LTC">
 		<SimpleData name="gml_id">EPCI_053.9</SimpleData>
 		<SimpleData name="ID_EPCI">9</SimpleData>
